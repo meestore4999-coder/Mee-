@@ -5,10 +5,3 @@ out/
 .env.local
 .env.*.local
 .DS_Store
-
-.env
-.env.*
-!.env.example
-node_modules/
-.next/
-out/
