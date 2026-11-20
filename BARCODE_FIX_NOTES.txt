@@ -1,0 +1,17 @@
+MEE Barcode Generator fix
+
+Root cause:
+The previous barcode save logic used .eq('barcode', null) for products whose barcode column was SQL NULL. PostgreSQL does not match NULL using equality, so the UPDATE affected zero rows and generated barcodes were not saved.
+
+Changes:
+- Uses Supabase .is('barcode', null) for NULL barcode values.
+- Uses exact equality for empty-string/whitespace barcode values to avoid overwriting a value changed by another session.
+- Keeps store_id and product id filters on every update.
+- Retries unique/duplicate barcode collisions (up to 15 attempts).
+- Verifies a concurrent assignment by re-reading the product.
+- Refreshes barcode records after generation and reports per-product failures.
+- Adds a manual Refresh products button.
+- Product List already reads products.barcode and displays it in the SKU / Barcode column; no schema change is required.
+
+Validation:
+Source inspected and patched. A full Next.js build/typecheck could not be run in this environment because the supplied archive's node_modules directory is incomplete and npm ci did not finish within the execution window. Run npm ci, then npm run build on your machine before deployment.

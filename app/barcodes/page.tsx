@@ -11,9 +11,43 @@ export default function BarcodeGeneratorPage(){const {stores,activeStoreId,setAc
 useEffect(()=>{if(!storeId){const id=activeStoreId||stores[0]?.id||'';if(id)setStoreId(id)}},[storeId,activeStoreId,stores]);
 const load=useCallback(async()=>{if(!db||!storeId){setProducts([]);setLoading(false);return}setLoading(true);setError('');const {data,error}=await db.from('products').select('id,store_id,name,sku,barcode,brand,selling_price,is_active').eq('store_id',storeId).order('name');if(error)setError(error.message);setProducts((data||[]) as Product[]);setSelected([]);setLoading(false)},[db,storeId]);useEffect(()=>{void load()},[load]);
 const missing=useMemo(()=>products.filter(p=>!p.barcode?.trim()),[products]),filtered=useMemo(()=>products.filter(p=>`${p.name} ${p.sku||''} ${p.barcode||''}`.toLowerCase().includes(search.toLowerCase())),[products,search]),printRows=products.filter(p=>selected.includes(p.id)&&p.barcode);
-const assign=async(ids:string[])=>{if(!db||!storeId||!ids.length)return;setSaving(true);setError('');setNotice('');let done=0;const failures:string[]=[];for(const id of ids){const p=products.find(x=>x.id===id);if(!p||p.barcode?.trim())continue;let saved=false;for(let n=0;n<8;n++){const code=makeEAN13();const result=await db.from('products').update({barcode:code}).eq('id',id).eq('store_id',storeId).eq('barcode',p.barcode??'').select('id,barcode').maybeSingle();if(result.error){if(/duplicate|unique/i.test(result.error.message))continue;failures.push(`${p.name}: ${result.error.message}`);break}if(result.data?.barcode===code){done++;saved=true;break}if(!result.data){const check=await db.from('products').select('barcode').eq('id',id).eq('store_id',storeId).maybeSingle();if(check.data?.barcode?.trim()){saved=true;break}failures.push(`${p.name}: barcode save verify nahi hua (permission/RLS check karein).`);break}}if(!saved&&!failures.some(x=>x.startsWith(`${p.name}:`)))failures.push(`${p.name}: unique barcode generate nahi ho paya.`)}await load();setSelected(ids);setSaving(false);if(failures.length){setError(failures.join(' · '));setNotice(`${done} barcode(s) product records mein save hue; ${failures.length} failed.`)}else setNotice(`${done} missing barcode(s) generated, verified and saved directly in Products. Products list refresh kar di gayi hai.`)};
+const assign=async(ids:string[])=>{
+ if(!db||!storeId||!ids.length||saving)return;
+ setSaving(true);setError('');setNotice('');
+ let done=0;let alreadyAssigned=0;const failures:string[]=[];
+ for(const id of [...new Set(ids)]){
+  const p=products.find(x=>x.id===id);
+  if(!p)continue;
+  if(p.barcode?.trim()){alreadyAssigned++;continue;}
+  let saved=false;let lastError='';
+  for(let attempt=0;attempt<15;attempt++){
+   const code=makeEAN13();
+   // IMPORTANT: SQL equality against NULL never matches. Use IS NULL for null barcodes.
+   let update=db.from('products').update({barcode:code}).eq('id',id).eq('store_id',storeId);
+   update=p.barcode===null?update.is('barcode',null):update.eq('barcode',p.barcode);
+   const result=await update.select('id,barcode').maybeSingle();
+   if(result.error){
+    lastError=result.error.message;
+    if(/duplicate|unique|products_store_id_barcode_key/i.test(lastError))continue;
+    break;
+   }
+   if(result.data?.barcode===code){done++;saved=true;break;}
+   // A concurrent request may have assigned a barcode after this page loaded.
+   const check=await db.from('products').select('barcode').eq('id',id).eq('store_id',storeId).maybeSingle();
+   if(check.error){lastError=check.error.message;break;}
+   if(check.data?.barcode?.trim()){alreadyAssigned++;saved=true;break;}
+   lastError='Update returned no row. Check Supabase RLS UPDATE policy and store access.';
+   break;
+  }
+  if(!saved)failures.push(`${p.name}: ${lastError||'Unique barcode generate/save nahi ho paya.'}`);
+ }
+ await load();
+ setSaving(false);
+ if(failures.length){setError(failures.join(' · '));setNotice(`${done} barcode save hue; ${alreadyAssigned} pehle se assigned the; ${failures.length} failed.`);}
+ else setNotice(`${done} missing barcode generate karke Supabase Products mein save aur verify kiye. ${alreadyAssigned} products pehle se barcode wale the. Products list refresh kar di gayi hai.`);
+};
 return <div className="page-stack mee-barcode-page"><style jsx global>{`@media print{body *{visibility:hidden!important}.mee-barcode-print,.mee-barcode-print *{visibility:visible!important}.mee-barcode-print{position:absolute!important;left:0!important;top:0!important;width:100%!important;padding:8mm!important}.mee-label-grid{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:5mm!important}.mee-label{border:1px solid #ddd!important;break-inside:avoid!important;padding:4mm!important;text-align:center!important}.mee-label-name{font-size:11pt!important;font-weight:700!important}.mee-ean{width:100%!important;height:auto!important;max-height:24mm!important}}`}</style>
-<div className="page-heading"><div><span className="eyebrow">INVENTORY TOOLS</span><h1>Barcode Generator</h1><p className="muted">Generate missing barcodes for every product in this store, save them directly to Products, and print labels.</p></div><button className="btn btn-outline" onClick={()=>window.print()} disabled={!printRows.length}>Print selected labels</button></div>
+<div className="page-heading"><div><span className="eyebrow">INVENTORY TOOLS</span><h1>Barcode Generator</h1><p className="muted">Generate missing barcodes for every product in this store, save them directly to Products, and print labels.</p></div><div className="page-actions"><button className="btn btn-outline" onClick={()=>void load()} disabled={loading||saving}>Refresh products</button><button className="btn btn-outline" onClick={()=>window.print()} disabled={!printRows.length}>Print selected labels</button></div></div>
 <section className="panel"><div className="form-grid"><label>Store<select value={storeId} onChange={e=>{setStoreId(e.target.value);setActiveStoreId(e.target.value)}}>{stores.map((s:Store)=><option key={s.id} value={s.id}>{s.name}</option>)}</select></label><label>Search product<input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Product name or SKU"/></label><div className="form-actions"><button className="btn btn-primary" disabled={saving||!missing.length} onClick={()=>void assign(missing.map(p=>p.id))}>{saving?'Generating…':`Generate all missing (${missing.length})`}</button></div></div><p className="muted">Creates EAN-13 internal-use codes (20 prefix), saves them in the existing products.barcode field, and prints labels for your wireless scanner.</p>{error&&<p className="error-text">{error}</p>}{notice&&<p className="success-text">{notice}</p>}</section>
 <section className="stats-grid"><article className="stat-card blue"><span className="stat-title">Store products</span><strong>{products.length}</strong></article><article className="stat-card orange"><span className="stat-title">Barcode missing</span><strong>{missing.length}</strong></article><article className="stat-card green"><span className="stat-title">Barcode assigned</span><strong>{products.length-missing.length}</strong></article></section>
 <section className="panel"><div className="panel-heading"><div><h2>Product barcode list</h2><p className="muted">Select products to print existing barcode labels.</p></div><div className="page-actions"><button className="btn btn-outline btn-small" onClick={()=>setSelected(filtered.filter(p=>p.barcode).map(p=>p.id))}>Select printable</button><button className="btn btn-outline btn-small" onClick={()=>setSelected([])}>Clear selection</button></div></div><div className="table-wrap"><table><thead><tr><th>Select</th><th>Product</th><th>SKU</th><th>Barcode</th><th>Action</th></tr></thead><tbody>{loading?<tr><td colSpan={5}>Loading products…</td></tr>:filtered.length===0?<tr><td colSpan={5} className="empty-cell">No products found.</td></tr>:filtered.map(p=><tr key={p.id}><td><input type="checkbox" checked={selected.includes(p.id)} disabled={!p.barcode} onChange={()=>setSelected(v=>v.includes(p.id)?v.filter(x=>x!==p.id):[...v,p.id])}/></td><td><b>{p.name}</b>{p.brand&&<small>{p.brand}</small>}</td><td>{p.sku||'—'}</td><td>{p.barcode||<span className="status-pill">Not generated</span>}</td><td>{!p.barcode?<button className="btn btn-primary btn-small" disabled={saving} onClick={()=>void assign([p.id])}>Generate</button>:<button className="btn btn-outline btn-small" onClick={()=>setSelected(v=>v.includes(p.id)?v.filter(x=>x!==p.id):[...v,p.id])}>{selected.includes(p.id)?'Selected':'Select label'}</button>}</td></tr>)}</tbody></table></div></section>
