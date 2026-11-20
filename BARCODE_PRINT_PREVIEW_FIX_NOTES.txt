@@ -1,0 +1,10 @@
+MEE UDYAMA 80D BARCODE PRINT FIX
+
+Fixes in this revision:
+- Print page is explicitly constrained to the selected custom sticker width x height.
+- Label content is vertically centered inside each sticker.
+- Barcode SVG uses nearly the full usable sticker width (sticker width minus 5mm).
+- Barcode height is proportioned to the sticker height instead of leaving large unused space.
+- Product name and price remain centered; one selected product prints on one sticker/page.
+
+Important: set the printer/driver custom paper size to the exact width and height selected in MEE, choose 100% / Actual size, margins None, and disable browser headers/footers. The user's physical sticker dimensions have not been measured; the current UI default remains 50 x 30mm and can be changed to the measured stock size.

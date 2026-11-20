@@ -1,0 +1,9 @@
+MEE UDYAMA 80D barcode label print fix
+
+- Changed barcode print layout from 3-column grid to one label per print page.
+- Configured default label page size to 80mm x 40mm for an 80mm thermal label printer.
+- Removed print-preview heading and unrelated page content from physical print.
+- Each selected product prints as one complete sticker: product name, one barcode, price and SKU.
+- Each label starts on a fresh sticker/page; no 3-column layout or blank extra labels.
+
+Printer dialog: select UDYAMA 80D, paper/label width 80mm, scale 100%, margins None/0, and disable browser headers/footers. If the physical sticker height differs from 40mm, adjust the @page and .mee-label height together in app/barcodes/page.tsx.
