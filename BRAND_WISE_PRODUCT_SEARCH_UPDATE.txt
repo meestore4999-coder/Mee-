@@ -1,0 +1,21 @@
+MEE BRAND-WISE PRODUCT SEARCH UPDATE
+
+Implemented in this source archive:
+- Product Management search matches product name, brand, SKU and barcode.
+- Product Management has an All Brands / individual Brand filter and a visible Brand column.
+- Inventory search matches product name, brand and SKU; it has an individual Brand filter and visible Brand column.
+- Inventory stock movement rows display the linked product brand.
+- Billing product catalogue search accepts product name, brand, SKU and barcode; dropdown options show brand beside product name.
+- Billing invoice line snapshots now retain brand and printed invoice item rows display it.
+- Purchase product selectors show brand beside product name.
+- Barcode list search matches brand and displays a dedicated Brand column.
+- Internal Storefront product search matches brand and product cards display brand.
+- Public storefront search and product cards display brand when supplied by the public store RPC.
+- Reports include store brand names in the summary and CSV export.
+
+No database migration is required: this project already has a products.brand field and product create/edit already saves it. Existing products without a brand will display an em dash until a brand is entered in Product Management > Edit Product.
+
+Verification:
+- Source edits were applied to the latest available MEE GST-inclusive billing ZIP.
+- npm ci did not complete in this environment; npm run lint therefore cannot be completed because installed @types packages are incomplete.
+- Live Supabase and browser E2E tests remain pending.

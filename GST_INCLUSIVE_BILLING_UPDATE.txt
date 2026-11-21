@@ -1,0 +1,20 @@
+MEE GST-INCLUSIVE BILLING UPDATE
+
+Implemented in this source:
+- Product MRP field added; MRP and Selling Price are final GST-inclusive customer prices.
+- Product form prevents Selling Price from exceeding MRP when MRP is entered.
+- Billing no longer adds GST on top of the entered unit price.
+- GST is extracted from the GST-inclusive discounted amount.
+- Product-wise discount: fixed amount or percentage.
+- Bill-wide discount: fixed amount or percentage, applied after item discounts and allocated proportionally across lines for tax calculation.
+- Invoice item records store GST-inclusive unit price, discount amount, extracted GST, and final line total.
+- Invoice print view shows inclusive unit price, discount, included GST, and net amount.
+
+IMPORTANT DEPLOYMENT:
+Apply these migrations to the MEE Supabase project before deploying the app:
+1. supabase/migrations/20261121000100_mee_gst_inclusive_billing_discounts.sql
+2. supabase/migrations/20261121000200_mee_product_mrp_gst_inclusive.sql
+
+Existing product selling_price values are NOT automatically changed. If they were previously entered excluding GST, review/update them to final GST-inclusive prices before using the new billing calculation. Existing invoices are not recalculated or modified.
+
+Example: Selling Price Rs 1,180 at 18% GST -> taxable value Rs 1,000 + included GST Rs 180 = customer total Rs 1,180. No extra GST is added.
