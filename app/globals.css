@@ -1440,3 +1440,64 @@ img,svg,video,canvas{max-width:100%}
   .page-content{padding-left:clamp(28px,2vw,44px);padding-right:clamp(28px,2vw,44px)}
   .mee-products-page>.products-list-panel>.table-wrap td,.mee-inventory-page>.inventory-stock-panel>.inventory-stock-table td{padding-top:9px;padding-bottom:9px}
 }
+
+
+/* MEE Inventory compact operator layout + product photo thumbnails */
+.page-content:has(.mee-inventory-page){height:calc(100dvh - 76px)!important;min-height:0!important;overflow:hidden!important;padding:8px 12px 10px!important}
+.mee-inventory-page{gap:7px!important;grid-template-rows:auto auto auto minmax(0,1fr)!important}
+.mee-inventory-page>.inventory-heading{padding:0 2px!important;min-height:48px!important;align-items:center!important}
+.mee-inventory-page>.inventory-heading h1{font-size:23px!important;line-height:1.12!important;margin:1px 0 3px!important}
+.mee-inventory-page>.inventory-heading .eyebrow{font-size:9px!important;margin:0 0 2px!important}
+.mee-inventory-page>.inventory-heading .muted{font-size:11px!important;margin:0!important}
+.inventory-heading-actions{gap:6px!important}
+.inventory-heading-actions .btn{min-height:34px!important;padding:7px 11px!important;font-size:11px!important;border-radius:9px!important}
+.mee-inventory-page>.inventory-toolbar{padding:8px 11px!important;border-radius:12px!important}
+.mee-inventory-page>.inventory-toolbar .form-grid{grid-template-columns:minmax(190px,.9fr) minmax(280px,1.65fr) minmax(160px,.8fr)!important;gap:9px!important}
+.mee-inventory-page>.inventory-toolbar label{font-size:10px!important;gap:4px!important}
+.mee-inventory-page>.inventory-toolbar input,.mee-inventory-page>.inventory-toolbar select{height:35px!important;min-height:35px!important;padding:6px 10px!important;font-size:11px!important;border-radius:8px!important}
+.mee-inventory-page>.inventory-stats{gap:8px!important;margin:0!important}
+.mee-inventory-page>.inventory-stats .stat-card{padding:9px 13px!important;min-height:68px!important;border-radius:12px!important;box-shadow:0 3px 12px rgba(20,45,78,.035)!important}
+.mee-inventory-page>.inventory-stats .stat-title{font-size:10px!important}
+.mee-inventory-page>.inventory-stats .stat-card strong{font-size:23px!important;line-height:1.15!important;margin:3px 0!important}
+.mee-inventory-page>.inventory-stats .stat-card small{font-size:9px!important}
+.mee-inventory-page>.inventory-stock-panel{border-radius:14px!important}
+.mee-inventory-page>.inventory-stock-panel>.panel-heading{padding:9px 12px 7px!important}
+.mee-inventory-page>.inventory-stock-panel>.panel-heading h2{font-size:14px!important;margin:0 0 2px!important}
+.mee-inventory-page>.inventory-stock-panel>.panel-heading .muted{font-size:10px!important;margin:0!important}
+.mee-inventory-page>.inventory-stock-panel>.inventory-stock-table table{min-width:1120px!important}
+.mee-inventory-page>.inventory-stock-panel>.inventory-stock-table th{padding:8px 9px!important;font-size:9px!important;white-space:nowrap}
+.mee-inventory-page>.inventory-stock-panel>.inventory-stock-table td{padding:5px 9px!important;font-size:10px!important;vertical-align:middle!important}
+.inventory-product-cell{display:flex;align-items:center;gap:9px;min-width:230px;max-width:360px}
+.inventory-product-thumb{position:relative;display:inline-flex;align-items:center;justify-content:center;flex:0 0 42px;width:42px;height:42px;overflow:hidden;border:1px solid #e0e9f3;border-radius:8px;background:linear-gradient(145deg,#f7faff,#edf4fb)}
+.inventory-product-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:2px;background:#fff}
+.inventory-product-thumb-fallback{font-size:17px;line-height:1}
+.inventory-product-cell>b{display:block;max-width:290px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px!important;line-height:1.25}
+.mee-inventory-page .inventory-stock-table tbody tr{height:52px}
+.mee-inventory-page .inventory-stock-table .status-pill,.mee-inventory-page .inventory-stock-table .inventory-ok-pill{font-size:9px!important;padding:3px 7px!important}
+@media(max-height:800px) and (min-width:761px){
+ .page-content:has(.mee-inventory-page){height:calc(100dvh - 70px)!important;padding-top:5px!important}
+ .mee-inventory-page{gap:5px!important}
+ .mee-inventory-page>.inventory-heading{min-height:42px!important}
+ .mee-inventory-page>.inventory-heading h1{font-size:20px!important}
+ .mee-inventory-page>.inventory-toolbar{padding:6px 9px!important}
+ .mee-inventory-page>.inventory-toolbar input,.mee-inventory-page>.inventory-toolbar select{height:32px!important;min-height:32px!important}
+ .mee-inventory-page>.inventory-stats .stat-card{min-height:58px!important;padding:6px 11px!important}
+ .mee-inventory-page>.inventory-stats .stat-card strong{font-size:20px!important}
+ .mee-inventory-page>.inventory-stock-panel>.panel-heading{padding:7px 10px 5px!important}
+ .mee-inventory-page .inventory-stock-table tbody tr{height:48px}
+}
+@media(max-width:900px){
+ .mee-inventory-page>.inventory-heading{align-items:flex-start!important;flex-direction:column!important}
+ .inventory-heading-actions{justify-content:flex-start!important}
+ .mee-inventory-page>.inventory-toolbar .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .mee-inventory-page>.inventory-toolbar .form-grid label:nth-child(2){grid-column:1/-1;grid-row:1}
+}
+@media(max-width:600px){
+ .page-content:has(.mee-inventory-page){height:auto!important;min-height:calc(100dvh - 70px)!important;overflow:visible!important;padding:10px!important}
+ .mee-inventory-page{height:auto!important;max-height:none!important;overflow:visible!important;display:flex!important;flex-direction:column!important}
+ .mee-inventory-page>.inventory-toolbar .form-grid{grid-template-columns:1fr!important}
+ .mee-inventory-page>.inventory-toolbar .form-grid label:nth-child(2){grid-column:auto;grid-row:auto}
+ .mee-inventory-page>.inventory-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .mee-inventory-page>.inventory-stock-panel{min-height:430px!important;height:58vh!important}
+ .mee-inventory-page>.inventory-stock-panel>.inventory-stock-table{overflow:auto!important}
+}
