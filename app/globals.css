@@ -1292,3 +1292,151 @@
 .mee-shop-mobile-cart{z-index:45}
 @media(max-width:850px){.mee-shop-header{gap:12px}.mee-shop-hero{min-height:150px;max-height:none;padding:22px 24px}.mee-shop-hero-art{display:none}.mee-shop-toolbar{top:0;grid-template-columns:1fr 1.5fr}.mee-shop-store-actions{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center}.mee-shop-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.mee-shop-product-image{height:125px}}
 @media(max-width:560px){.mee-shop-header{position:relative;min-height:0;padding:10px 13px}.mee-shop-brand{min-width:0}.mee-shop-brand b{font-size:14px}.mee-shop-brand small{font-size:9px}.mee-shop-logo{width:36px;height:36px}.mee-shop-header nav{gap:13px}.mee-shop-cart{width:100%;margin:0;padding:7px 9px}.mee-shop-hero{margin:10px 12px 0;padding:20px 17px;border-radius:16px;min-height:0}.mee-shop-hero h1{font-size:27px}.mee-shop-hero p{font-size:11px}.mee-shop-toolbar{position:relative;top:auto;grid-template-columns:1fr;margin:10px 12px 0;padding:11px}.mee-shop-store-actions{grid-column:auto}.mee-shop-category-panel{margin:9px 12px 12px;padding:12px;border-radius:14px}.mee-shop-category-heading{align-items:flex-start;flex-direction:column;gap:9px}.mee-shop-category-heading .mee-shop-filter-select{width:100%}.mee-shop-category-panel .mee-shop-categories{gap:7px;padding:10px 2px}.mee-shop-category-panel .mee-shop-categories>button{flex-basis:68px;min-width:68px}.mee-shop-category-panel .mee-shop-category-image,.mee-shop-category-panel .mee-shop-category-icon{width:43px;height:43px}.mee-shop-subcategory-toolbar{align-items:flex-start;flex-direction:column}.mee-shop-subcategory-toolbar .mee-shop-filter-select{width:100%}.mee-shop-section-head{margin:13px 12px 9px;flex-direction:column;align-items:stretch}.mee-shop-sort{justify-content:space-between}.mee-shop-sort select{flex:1}.mee-shop-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:0 12px 82px}.mee-shop-product-image{height:118px}.mee-shop-product-body{padding:9px}.mee-shop-product-body h3{font-size:12px}.mee-shop-product-body p{display:none}.mee-shop-product-foot{margin-top:8px}.mee-shop-product-foot b{font-size:13px}.mee-shop-product-foot button{padding:7px 9px}.mee-shop-footer{margin:20px 12px 0}.mee-shop-mobile-cart{left:10px;right:10px;bottom:9px}}
+
+/* MEE UNIVERSAL RESPONSIVE LAYOUT — wide desktop, legacy PC, tablet and mobile */
+html{width:100%;max-width:100%;overflow-x:hidden;scrollbar-gutter:stable}
+body{width:100%;max-width:100%;overflow-x:hidden}
+.app-shell,.main-area,.page-content,.page-content>*{min-width:0;max-width:100%}
+.main-area{width:auto}
+.page-content{width:100%;overflow-x:clip}
+.panel,.stat-card,.store-card,.quick-card,.record-form,.form-grid,.form-actions,.page-heading,.heading-actions,.section-heading,.panel-heading{min-width:0}
+input,select,textarea{max-width:100%;min-width:0}
+img,svg,video,canvas{max-width:100%}
+.table-wrap,.products-list-panel .table-wrap,.inventory-stock-table,.billing-invoices-panel>.table-wrap{max-width:100%;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.table-wrap table{width:100%;min-width:max-content}
+.form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+/* Large / high-resolution desktop */
+@media(min-width:1600px){
+ .sidebar{width:260px}.main-area{margin-left:260px}.page-content{padding:32px clamp(30px,2.4vw,52px) 44px}
+ .topbar{padding-inline:clamp(28px,2.4vw,52px)}
+ .mee-shop-grid{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+}
+/* Standard laptops and older 1366/1280 displays */
+@media(max-width:1250px) and (min-width:901px){
+ .sidebar{width:208px}.main-area{margin-left:208px}.topbar{padding:0 20px}.page-content{padding:22px 20px 30px}
+ .page-heading{gap:12px}.page-heading h1{font-size:24px}.stats-grid{gap:10px}.stat-card{padding:14px}
+ .store-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lower-grid{grid-template-columns:1fr}
+ .mee-shop-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+ .mee-shop-product-image{height:130px}.mee-shop-hero{min-height:145px;padding:20px 25px}
+}
+/* Tablet and compact laptops */
+@media(max-width:900px) and (min-width:701px){
+ .sidebar{width:68px}.main-area{margin-left:68px}.page-content{padding:20px 18px 28px}
+ .topbar{height:66px;padding-inline:18px}.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .store-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lower-grid{grid-template-columns:1fr}
+ .mee-shop-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-inline:16px}
+ .mee-shop-toolbar{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr)}
+ .mee-shop-product-image{height:125px}
+}
+/* Phones: replace fixed desktop sidebar with a compact, scrollable top navigation */
+@media(max-width:700px){
+ .app-shell{min-height:100dvh}
+ .sidebar{position:relative;inset:auto;width:100%;height:auto;min-height:0;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:0;padding:0;background:linear-gradient(105deg,#082b4c,#071c34);box-shadow:0 5px 18px rgba(5,24,45,.14)}
+ .brand{height:58px;padding:8px 12px;border:0;gap:8px}.brand img{width:38px;height:38px}.brand b{font-size:17px}.brand small{font-size:8px;margin-top:1px}
+ .side-label,.sidebar-bottom{display:none!important}
+ .sidebar nav{display:flex;align-items:center;gap:5px;min-width:0;overflow-x:auto;overflow-y:hidden;padding:8px 10px;scrollbar-width:thin;scrollbar-color:#52708e transparent;-webkit-overflow-scrolling:touch}
+ .nav-item{flex:0 0 auto;justify-content:center;gap:7px;padding:9px 10px;border-radius:8px;font-size:10px;white-space:nowrap}
+ .nav-icon{font-size:14px;width:auto}
+ .nav-item>span:not(.nav-icon){display:inline!important}
+ .main-area{margin-left:0;width:100%;min-height:calc(100dvh - 58px)}
+ .topbar{position:sticky;top:0;height:56px;padding:0 12px;gap:8px;z-index:8}
+ .mobile-brand{display:block;font-size:16px;line-height:1.05;white-space:nowrap}.mobile-brand span{font-size:8px}
+ .breadcrumb{display:none}.top-actions{gap:7px;min-width:0}.top-actions .store-switcher{max-width:min(44vw,180px);height:34px;font-size:10px}
+ .profile{min-width:0}.profile>span:not(.avatar){display:none}.profile .avatar{width:30px;height:30px;font-size:10px}
+ .page-content{padding:15px 12px 24px;max-width:none}
+ .page-heading{align-items:flex-start;flex-direction:column;gap:10px;margin-bottom:16px}.page-heading h1{font-size:21px;line-height:1.2}
+ .heading-actions{width:100%;flex-wrap:wrap}.heading-actions .btn{flex:1 1 auto}
+ .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:16px}
+ .stat-card{padding:11px;border-radius:11px}.stat-card strong{font-size:19px;margin:9px 0 4px;overflow-wrap:anywhere}
+ .store-grid{grid-template-columns:1fr;gap:10px}.lower-grid{grid-template-columns:1fr;gap:10px}
+ .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .panel{padding:13px;border-radius:12px}.panel-heading,.section-heading{align-items:flex-start;flex-wrap:wrap}
+ .form-grid{grid-template-columns:1fr!important;gap:10px!important}.record-form{min-width:0}
+ .form-actions{flex-wrap:wrap}.form-actions>.btn,.form-actions>button{flex:1 1 auto}
+ .table-wrap table{min-width:680px}.modal-backdrop{padding:8px}.checkout-modal{max-height:calc(100dvh - 16px);border-radius:14px}
+ .mee-shop-header{padding:9px 12px;gap:8px}.mee-shop-header nav{order:3;flex-basis:100%;overflow-x:auto;white-space:nowrap;padding:8px 0 2px}
+ .mee-shop-cart{width:100%;margin:0;justify-content:space-between}
+ .mee-shop-hero{margin:10px 12px 0;padding:18px 16px;min-height:0;max-height:none;border-radius:15px}
+ .mee-shop-hero h1,.mee-shop-dynamic-copy h1{font-size:clamp(22px,6vw,30px);line-height:1.12}
+ .mee-shop-toolbar{position:relative;top:auto;grid-template-columns:1fr;margin:10px 12px 0;padding:10px;gap:9px}
+ .mee-shop-store-actions{grid-column:auto;flex-direction:row;justify-content:space-between;flex-wrap:wrap}
+ .mee-shop-category-panel{margin:9px 12px 12px;padding:11px;border-radius:13px}
+ .mee-shop-category-heading{align-items:stretch;flex-direction:column;gap:8px}.mee-shop-category-heading .mee-shop-filter-select{width:100%}
+ .mee-shop-category-panel .mee-shop-categories{overflow-x:auto;gap:7px;padding:9px 2px}
+ .mee-shop-category-panel .mee-shop-categories>button{flex:0 0 65px;min-width:65px;gap:6px;font-size:9px}
+ .mee-shop-category-panel .mee-shop-category-image,.mee-shop-category-panel .mee-shop-category-icon{width:40px;height:40px;border-radius:12px}
+ .mee-shop-subcategory-toolbar{align-items:stretch;flex-direction:column;gap:8px}.mee-shop-subcategory-toolbar .mee-shop-filter-select{width:100%}
+ .mee-shop-subcategories{overflow-x:auto;flex-wrap:nowrap;padding-bottom:5px}.mee-shop-subcategories>button{flex:0 0 auto;white-space:nowrap}
+ .mee-shop-section-head{margin:12px 12px 9px;align-items:stretch;flex-direction:column;gap:8px}
+ .mee-shop-sort{width:100%;justify-content:space-between}.mee-shop-sort select{flex:1;max-width:65%}
+ .mee-shop-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 12px 84px}
+ .mee-shop-product{min-width:0;border-radius:11px}.mee-shop-product-image{height:clamp(90px,27vw,135px)}
+ .mee-shop-product-body{padding:8px}.mee-shop-product-body h3{font-size:11px;overflow-wrap:anywhere}
+ .mee-shop-product-body p{display:none}.mee-shop-product-foot{gap:5px;align-items:center;flex-wrap:wrap}
+ .mee-shop-product-foot b{font-size:13px}.mee-shop-product-foot button{padding:7px 8px;font-size:9px}
+ .mee-shop-qty{gap:9px;padding:5px}.mee-shop-mobile-cart{left:9px;right:9px;bottom:max(8px,env(safe-area-inset-bottom));padding:10px}
+}
+@media(max-width:390px){
+ .brand{padding-inline:8px}.brand small{display:none}.brand img{width:34px;height:34px}
+ .sidebar nav{padding-inline:7px;gap:3px}.nav-item{padding:8px;font-size:9px}
+ .page-content{padding-inline:9px}.topbar{padding-inline:9px}.top-actions .store-switcher{max-width:42vw}
+ .stats-grid{gap:6px}.stat-card{padding:9px}.stat-card strong{font-size:17px}
+ .mee-shop-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-inline:9px}
+ .mee-shop-product-body{padding:7px}.mee-shop-product-foot{align-items:flex-start;flex-direction:column}
+ .mee-shop-product-foot button{width:100%}
+}
+/* Low-height screens: avoid clipped content on older 1366x768 / 1280x720 PCs */
+@media(min-width:701px) and (max-height:820px){
+ .topbar{height:62px}.page-content{padding-top:18px;padding-bottom:24px}
+ .page-heading{margin-bottom:16px}.stats-grid{margin-bottom:18px}
+ .mee-shop-hero{min-height:130px;max-height:150px;padding-block:18px}
+ .mee-shop-category-panel{margin-top:8px;margin-bottom:10px;padding-block:10px}
+ .mee-shop-category-panel .mee-shop-categories{padding-block:8px}
+}
+
+/* MEE SCREEN-DENSITY CALIBRATION — preserve data, expose more rows on shorter PC screens */
+@media (min-width: 1400px) and (max-width: 1799px) {
+  .sidebar{width:232px}
+  .main-area{margin-left:232px}
+  .page-content{padding-left:24px;padding-right:24px}
+  .topbar{padding-left:24px;padding-right:24px}
+}
+@media (min-width: 901px) and (max-height: 900px) {
+  .topbar{height:62px;min-height:62px}
+  .page-content:has(.mee-products-page),
+  .page-content:has(.mee-inventory-page){height:calc(100dvh - 62px);padding-top:10px;padding-bottom:8px;overflow:hidden}
+  .mee-products-page,.mee-inventory-page{gap:7px}
+  .mee-products-page>.page-heading,.mee-inventory-page>.inventory-heading{margin-bottom:0;gap:8px}
+  .mee-products-page>.page-heading h1,.mee-inventory-page>.inventory-heading h1{font-size:22px;line-height:1.12;margin:2px 0 3px}
+  .mee-products-page>.page-heading .muted,.mee-inventory-page>.inventory-heading .muted{font-size:10px;line-height:1.25}
+  .mee-products-page>.products-toolbar-panel,.mee-inventory-page>.inventory-toolbar{padding:8px 11px}
+  .mee-products-page>.products-toolbar-panel .form-grid,.mee-inventory-page>.inventory-toolbar .form-grid{gap:7px 10px}
+  .mee-products-page>.products-toolbar-panel input,.mee-products-page>.products-toolbar-panel select,
+  .mee-inventory-page>.inventory-toolbar input,.mee-inventory-page>.inventory-toolbar select{height:36px;min-height:36px;padding-top:0;padding-bottom:0}
+  .mee-products-page>.inventory-stats,.mee-inventory-page>.inventory-stats{gap:8px}
+  .mee-products-page>.inventory-stats .stat-card,.mee-inventory-page>.inventory-stats .stat-card{padding:9px 12px;min-height:74px}
+  .mee-products-page>.inventory-stats .stat-card strong,.mee-inventory-page>.inventory-stats .stat-card strong{font-size:20px;margin:5px 0 2px}
+  .mee-products-page>.inventory-stats .stat-card small,.mee-inventory-page>.inventory-stats .stat-card small{font-size:9px}
+  .mee-products-page>.products-list-panel>.panel-heading,.mee-inventory-page>.inventory-stock-panel>.panel-heading{padding:8px 12px 6px;margin:0}
+  .mee-products-page>.products-list-panel>.panel-heading h2,.mee-inventory-page>.inventory-stock-panel>.panel-heading h2{font-size:14px;margin:0 0 2px}
+  .mee-products-page>.products-list-panel>.panel-heading .muted,.mee-inventory-page>.inventory-stock-panel>.panel-heading .muted{font-size:9px}
+  .mee-products-page>.products-list-panel>.table-wrap td,.mee-inventory-page>.inventory-stock-panel>.inventory-stock-table td{padding:6px 8px;line-height:1.2;font-size:10px}
+  .mee-products-page>.products-list-panel>.table-wrap th,.mee-inventory-page>.inventory-stock-panel>.inventory-stock-table th{padding:7px 8px;font-size:9px}
+  .mee-products-page .mee-product-table-name img{width:34px;height:34px}
+  .mee-products-page .mee-product-actions .btn{padding:5px 7px;font-size:9px}
+}
+@media (min-width: 901px) and (max-height: 760px) {
+  .page-content:has(.mee-products-page),.page-content:has(.mee-inventory-page){padding-top:7px;padding-bottom:6px}
+  .mee-products-page,.mee-inventory-page{gap:5px}
+  .mee-products-page>.page-heading h1,.mee-inventory-page>.inventory-heading h1{font-size:20px}
+  .mee-products-page>.products-toolbar-panel,.mee-inventory-page>.inventory-toolbar{padding:6px 9px}
+  .mee-products-page>.inventory-stats .stat-card,.mee-inventory-page>.inventory-stats .stat-card{min-height:64px;padding:7px 10px}
+  .mee-products-page>.products-list-panel>.table-wrap td,.mee-inventory-page>.inventory-stock-panel>.inventory-stock-table td{padding-top:4px;padding-bottom:4px}
+  .mee-products-page>.products-list-panel>.panel-heading,.mee-inventory-page>.inventory-stock-panel>.panel-heading{padding-top:6px;padding-bottom:4px}
+}
+@media (min-width: 1800px) and (min-height: 950px) {
+  .sidebar{width:248px}.main-area{margin-left:248px}
+  .page-content{padding-left:clamp(28px,2vw,44px);padding-right:clamp(28px,2vw,44px)}
+  .mee-products-page>.products-list-panel>.table-wrap td,.mee-inventory-page>.inventory-stock-panel>.inventory-stock-table td{padding-top:9px;padding-bottom:9px}
+}
