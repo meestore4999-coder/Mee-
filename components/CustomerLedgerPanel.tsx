@@ -12,7 +12,7 @@ export default function CustomerLedgerPanel(){
  const load=useCallback(async()=>{if(!db||!businessId)return;const {data,error}=await db.from('customers').select('id,customer_code,full_name,phone,email,address,city,state,pincode,gstin,opening_balance,created_at').eq('business_id',businessId).order('full_name').limit(1000);if(error)setError(error.message);setCustomers(data||[]);if(!selected&&data?.length)setSelected(data[0].id)},[db,businessId,selected]);
  const loadDetails=useCallback(async()=>{if(!db||!selected)return;setError('');
   let ledgerQ=db.from('customer_ledger_entries').select('id,entry_date,entry_type,reference_type,reference_id,debit,credit,description,store_id,stores(name)').eq('customer_id',selected).order('entry_date',{ascending:false}).limit(1000);
-  let invoiceQ=db.from('invoices').select('id,invoice_no,status,payment_status,invoice_date,subtotal,discount_amount,tax_amount,total_amount,amount_paid,balance_due,notes,store_id,stores(name)').eq('customer_id',selected).order('invoice_date',{ascending:false}).limit(500);
+  let invoiceQ=db.from('invoices').select('id,invoice_no,status,payment_status,invoice_date,subtotal,discount_amount,tax_amount,total_amount,amount_paid,balance_due,notes,store_id,stores(name)').eq('customer_id',selected).eq('status','final').order('invoice_date',{ascending:false}).limit(500);
   // Customer account history is business-wide: deliberately do not filter by active store.
   // Supabase RLS remains the authorization boundary; store_id is shown on every row.
   const [lr,ir]=await Promise.all([ledgerQ,invoiceQ]);if(lr.error)setError(lr.error.message);setEntries(lr.data||[]);if(ir.error)setError(ir.error.message);const inv=ir.data||[];setInvoices(inv);
