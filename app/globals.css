@@ -1705,3 +1705,309 @@ img,svg,video,canvas{max-width:100%}
 .mee-drafts-modal .draft-modal-footnote{font-size:10px;margin:0}
 .mee-drafts-modal .btn-danger{background:#fff1f0;color:#b42318;border:1px solid #fecdca}
 @media(max-width:680px){.mee-drafts-modal{width:100%;height:100dvh;max-height:100dvh;border-radius:0;padding:14px}.mee-drafts-modal .draft-bills-table{max-height:none;flex:1 1 auto}}
+
+
+/* ── MEE responsive recovery: natural page scroll on short/compact displays ── */
+/* Keep authentication screens independent of dashboard/workspace overflow rules. */
+.auth-screen{
+  position:fixed!important;
+  inset:0!important;
+  z-index:10000!important;
+  min-height:100dvh!important;
+  width:100%!important;
+  overflow-y:auto!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:20px!important;
+}
+.auth-card{max-height:calc(100dvh - 40px);overflow-y:auto;}
+
+/* Main content must grow with real data instead of clipping at the viewport. */
+.page-content:has(.mee-products-page),
+.page-content:has(.mee-inventory-page),
+.page-content:has(.mee-billing-page){
+  height:auto!important;
+  min-height:calc(100dvh - 76px)!important;
+  max-height:none!important;
+  overflow-x:hidden!important;
+  overflow-y:visible!important;
+  padding:clamp(10px,1.25vw,20px)!important;
+  max-width:none!important;
+}
+.mee-products-page,
+.mee-inventory-page,
+.mee-billing-page{
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:visible!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:clamp(8px,.8vw,14px)!important;
+}
+
+/* Product and inventory tables get a generous, independently scrollable viewport. */
+.mee-products-page .products-list-panel,
+.mee-inventory-page .inventory-stock-panel{
+  display:flex!important;
+  flex-direction:column!important;
+  min-height:320px!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:hidden!important;
+}
+.mee-products-page .products-list-panel .table-wrap,
+.mee-inventory-page .inventory-stock-panel .inventory-stock-table{
+  flex:1 1 auto!important;
+  min-height:220px!important;
+  max-height:min(62vh,680px)!important;
+  overflow:auto!important;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:#9bb1c9 #edf2f8;
+}
+.mee-products-page .products-list-panel .table-wrap table,
+.mee-inventory-page .inventory-stock-panel .inventory-stock-table table{
+  min-width:980px;
+}
+.mee-products-page .products-list-panel .table-wrap thead,
+.mee-inventory-page .inventory-stock-panel .inventory-stock-table thead{
+  position:sticky;
+  top:0;
+  z-index:2;
+}
+
+/* Billing: compact top controls, natural page height, invoice history below content. */
+.mee-billing-page .billing-invoices-panel{
+  display:flex!important;
+  flex-direction:column!important;
+  min-height:280px!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:hidden!important;
+}
+.mee-billing-page .billing-invoices-panel .table-wrap{
+  min-height:180px!important;
+  max-height:min(58vh,620px)!important;
+  overflow:auto!important;
+  overscroll-behavior:contain;
+}
+.mee-billing-page .stats-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:clamp(6px,.7vw,12px)!important;
+}
+.mee-billing-page .stat-card{
+  min-width:0!important;
+  padding:clamp(8px,.8vw,14px)!important;
+}
+.mee-billing-page .stat-card strong{overflow-wrap:anywhere;}
+
+/* Older desktop monitors / compact laptops: fit controls without hiding fields. */
+@media (min-width:701px) and (max-width:1366px){
+  .page-content:has(.mee-products-page),
+  .page-content:has(.mee-inventory-page),
+  .page-content:has(.mee-billing-page){padding:9px 10px 16px!important;}
+  .mee-products-page .page-heading,
+  .mee-inventory-page .inventory-heading,
+  .mee-billing-page .page-heading{gap:8px!important;flex-wrap:wrap!important;margin-bottom:10px!important;}
+  .mee-products-page .page-heading h1,
+  .mee-inventory-page .inventory-heading h1,
+  .mee-billing-page .page-heading h1{font-size:clamp(18px,1.7vw,23px)!important;}
+  .mee-products-page .heading-actions,
+  .mee-inventory-page .inventory-heading-actions,
+  .mee-billing-page .billing-top-actions{gap:5px!important;flex-wrap:wrap!important;}
+  .mee-products-page .heading-actions .btn,
+  .mee-inventory-page .inventory-heading-actions .btn,
+  .mee-billing-page .billing-top-actions .btn{padding:7px 9px!important;font-size:10px!important;}
+  .mee-products-page .inventory-stats,
+  .mee-inventory-page .inventory-stats{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:7px!important;}
+  .mee-products-page .inventory-stats .stat-card,
+  .mee-inventory-page .inventory-stats .stat-card{padding:8px 10px!important;min-height:64px!important;}
+  .mee-products-page .inventory-stats .stat-card strong,
+  .mee-inventory-page .inventory-stats .stat-card strong{font-size:19px!important;}
+  .mee-billing-page .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  .mee-products-page .products-toolbar-panel,
+  .mee-inventory-page .inventory-toolbar{padding:10px!important;}
+}
+
+/* Small screens: let the whole document scroll; tables retain their own horizontal scroll. */
+@media (max-width:700px){
+  .page-content:has(.mee-products-page),
+  .page-content:has(.mee-inventory-page),
+  .page-content:has(.mee-billing-page){
+    height:auto!important;min-height:calc(100dvh - 60px)!important;
+    overflow:visible!important;padding:10px!important;
+  }
+  .mee-products-page,.mee-inventory-page,.mee-billing-page{
+    height:auto!important;max-height:none!important;overflow:visible!important;
+  }
+  .mee-products-page .inventory-stats,
+  .mee-inventory-page .inventory-stats,
+  .mee-billing-page .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  .mee-products-page .products-list-panel .table-wrap,
+  .mee-inventory-page .inventory-stock-panel .inventory-stock-table{
+    min-height:260px!important;max-height:58vh!important;overflow:auto!important;
+  }
+  .mee-billing-page .billing-invoices-panel .table-wrap{
+    min-height:200px!important;max-height:55vh!important;overflow:auto!important;
+  }
+}
+
+
+/* MEE sidebar: keep brand and account fixed while the complete navigation scrolls. */
+.app-shell{min-height:100dvh;height:100dvh;overflow:hidden}
+.sidebar{
+  position:fixed!important;left:0;top:0;bottom:0;
+  height:100dvh!important;min-height:0!important;max-height:100dvh!important;
+  display:flex!important;flex-direction:column!important;
+  overflow:hidden!important;overscroll-behavior:contain;
+  z-index:30;
+}
+.sidebar .brand{flex:0 0 auto!important}
+.sidebar .side-label{flex:0 0 auto!important}
+.sidebar nav{
+  flex:1 1 auto!important;min-height:0!important;
+  display:flex!important;flex-direction:column!important;
+  overflow-x:hidden!important;overflow-y:auto!important;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:#6e8aa8 #09233d;
+  padding:8px 9px 12px!important;
+  -webkit-overflow-scrolling:touch;
+}
+.sidebar nav::-webkit-scrollbar{width:6px}
+.sidebar nav::-webkit-scrollbar-track{background:#09233d;border-radius:8px}
+.sidebar nav::-webkit-scrollbar-thumb{background:#6684a4;border-radius:8px}
+.sidebar .nav-item{flex:0 0 auto!important;min-height:39px}
+.sidebar .sidebar-bottom{flex:0 0 auto!important;position:relative!important}
+@media(max-width:700px){
+ .app-shell{height:auto;min-height:100dvh;overflow:visible}
+ .sidebar{
+  position:sticky!important;top:0;bottom:auto;left:auto;
+  width:100%!important;height:auto!important;max-height:none!important;
+  display:block!important;overflow:visible!important;
+ }
+ .sidebar nav{
+  flex-direction:row!important;overflow-x:auto!important;overflow-y:hidden!important;
+  min-height:48px!important;max-height:64px!important;
+ }
+}
+
+/* Scanner panel in Add Product: keyboard-wedge USB / wireless scanners submit on Enter. */
+.mee-stock-scan-panel{
+ display:grid;grid-template-columns:minmax(190px,.85fr) minmax(220px,1.3fr) auto;
+ align-items:center;gap:10px;margin:0 0 14px;padding:12px 14px;
+ border:1px solid #b9d4ef;border-radius:13px;
+ background:linear-gradient(110deg,#f0f7ff,#f5fbff 55%,#f0fbf8);
+}
+.mee-stock-scan-panel>div{display:flex;flex-direction:column;gap:4px;min-width:0}
+.mee-stock-scan-panel b{font-size:12px;color:#103a63}
+.mee-stock-scan-panel small{font-size:10px;line-height:1.4;color:#647b96}
+.mee-stock-scan-panel input{width:100%;min-width:0;min-height:40px;border:1px solid #c5d8ec;border-radius:9px;background:#fff;padding:9px 12px;font:inherit;color:#123451}
+.mee-stock-scan-panel input:focus{outline:2px solid #9ac7ff;border-color:#2878d8}
+.mee-stock-scan-panel button{white-space:nowrap;min-height:38px}
+@media(max-width:900px){
+ .mee-stock-scan-panel{grid-template-columns:1fr 1fr}
+ .mee-stock-scan-panel>div{grid-column:1/-1}
+}
+@media(max-width:560px){
+ .mee-stock-scan-panel{grid-template-columns:1fr;padding:10px}
+ .mee-stock-scan-panel>div{grid-column:auto}
+ .mee-stock-scan-panel button{width:100%}
+}
+
+
+/* MEE GLOBAL WORKSPACE SCROLL FIX — all authenticated pages */
+@media (min-width:701px){
+  html,body{height:100%;min-height:100%;overflow:hidden!important}
+  .app-shell{
+    display:flex!important;
+    width:100%!important;
+    height:100dvh!important;
+    min-height:0!important;
+    max-height:100dvh!important;
+    overflow:hidden!important;
+  }
+  .app-shell>.sidebar{
+    position:fixed!important;
+    inset:0 auto 0 0!important;
+    height:100dvh!important;
+    max-height:100dvh!important;
+    min-height:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    overflow:hidden!important;
+  }
+  .app-shell>.sidebar>.brand,
+  .app-shell>.sidebar>.side-label,
+  .app-shell>.sidebar>.sidebar-bottom{flex:0 0 auto!important}
+  .app-shell>.sidebar>nav{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    height:auto!important;
+    max-height:none!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain!important;
+    scrollbar-width:thin!important;
+    scrollbar-color:#6684a4 #09233d!important;
+  }
+  .app-shell>.sidebar>nav::-webkit-scrollbar{width:7px}
+  .app-shell>.sidebar>nav::-webkit-scrollbar-track{background:#09233d}
+  .app-shell>.sidebar>nav::-webkit-scrollbar-thumb{background:#6684a4;border-radius:8px}
+  .app-shell>.main-area{
+    display:flex!important;
+    flex:1 1 auto!important;
+    flex-direction:column!important;
+    width:auto!important;
+    height:100dvh!important;
+    min-height:0!important;
+    max-height:100dvh!important;
+    margin-left:248px!important;
+    overflow:hidden!important;
+  }
+  .app-shell>.main-area>.topbar{
+    position:relative!important;
+    top:auto!important;
+    flex:0 0 66px!important;
+    min-height:66px!important;
+    z-index:5!important;
+  }
+  .app-shell>.main-area>.page-content{
+    display:block!important;
+    flex:1 1 auto!important;
+    width:100%!important;
+    max-width:none!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin:0!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    overscroll-behavior-y:contain!important;
+    scrollbar-width:thin!important;
+    scrollbar-color:#9bb1c9 #edf2f8!important;
+    -webkit-overflow-scrolling:touch;
+  }
+  .app-shell>.main-area>.page-content::-webkit-scrollbar{width:10px}
+  .app-shell>.main-area>.page-content::-webkit-scrollbar-track{background:#edf2f8}
+  .app-shell>.main-area>.page-content::-webkit-scrollbar-thumb{background:#9bb1c9;border:2px solid #edf2f8;border-radius:9px}
+}
+@media (min-width:701px) and (max-width:900px){
+  .app-shell>.main-area{margin-left:72px!important}
+}
+@media (min-width:901px) and (max-width:1250px){
+  .app-shell>.main-area{margin-left:218px!important}
+}
+@media (min-width:1600px){
+  .app-shell>.main-area{margin-left:260px!important}
+}
+@media (max-width:700px){
+  html,body{height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important}
+  .app-shell{height:auto!important;min-height:100dvh!important;max-height:none!important;overflow:visible!important}
+  .app-shell>.main-area{height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important}
+  .app-shell>.main-area>.page-content{
+    height:auto!important;min-height:calc(100dvh - 62px)!important;max-height:none!important;
+    overflow:visible!important;overflow-x:hidden!important;
+  }
+}
